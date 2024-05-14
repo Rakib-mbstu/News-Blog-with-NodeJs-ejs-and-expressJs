@@ -68,7 +68,38 @@ router.get("/dashboard", authMiddleware, async (req, res) => {
       description: "NodeJs bloging site",
     };
     const data = await Post.find();
-    res.render("admin/dashboard", { locals, data });
+    res.render("admin/dashboard", { locals, data, layout: adminLayout });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+//create new post
+
+router.get("/add-post", authMiddleware, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "NodeJs bloging site",
+    };
+    res.render("admin/add-post", { locals, layout: adminLayout });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.post("/add-post", authMiddleware, async (req, res) => {
+  try {
+    try {
+      const newPost = new Post({
+        title: req.body.title,
+        body: req.body.body,
+      });
+      await Post.create(newPost);
+    } catch (error) {
+      console.log(error)
+    }
+    res.redirect("/dashboard");
   } catch (e) {
     console.log(e);
   }
