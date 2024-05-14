@@ -278,11 +278,12 @@ img{
   
   .admin-post-controls form {
     display: inline-block;
+    color: rgb(212, 42, 42);
   }
   
   .admin-post-controls .btn  {
     display: inline-block;
-    background-color: var(--black);
+    background-color: var(--grey);
     color: var(--gray-light);
     border: 0;
     text-decoration: none;

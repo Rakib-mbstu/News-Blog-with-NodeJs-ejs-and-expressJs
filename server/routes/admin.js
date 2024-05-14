@@ -22,21 +22,34 @@ router.get("/admin", async (req, res) => {
   }
 });
 
-router.get("/dashboard", async (req, res) => {
-  res.render("admin/dashboard");
-});
+//check is logged in
+
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+//login prompt
 
 router.post("/sign", async (req, res) => {
   try {
     const { userName, password } = req.body;
-    console.log(userName + ' ' + password)
     const user = await User.findOne({ userName });
     if (!user) {
       return res.status(401).json({ message: "Invalid" });
     }
     const isPassValid = await bcrypt.compare(password, user.password);
     if (!isPassValid) {
-      return res.status(401).json({ message: "Invalid" });
+      return res.status(401).json({ message: "Invalid password" });
     }
     const token = jwt.sign({ userId: user._id }, jwtSecret);
     res.cookie("token", token, { httpOnly: true });
@@ -46,6 +59,20 @@ router.post("/sign", async (req, res) => {
   }
 });
 
+//dashboard rendered
+
+router.get("/dashboard", authMiddleware, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "NodeJs bloging site",
+    };
+    const data = await Post.find();
+    res.render("admin/dashboard", { locals, data });
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 // router.post("/register", async (req, res) => {
 //   try {
