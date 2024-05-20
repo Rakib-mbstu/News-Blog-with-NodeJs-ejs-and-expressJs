@@ -1,23 +1,22 @@
 <header class="header">
-    <a href="/admin" class="header__logo">Admin Panel</a>
-    <nav class="header__nav">
-      <ul>
-        <li>
-          <a href="/" class="">Home</a>
-        </li>
-        <li>
-          <a href="/about" class="">about</a>
-        </li>
-        <li>
-          <a href="/contact" class="">contact</a>
-        </li>
-      </ul>
-    </nav>
-  
-    <div class="header__button">
-      <button>
-        Log Out
-      </button>
-    </div>
-  </header>
-  
+  <a href="/admin" class="header__logo">Admin Panel</a>
+  <nav class="header__nav">
+    <ul>
+      <li>
+        <a href="/" class="">Home</a>
+      </li>
+      <li>
+        <a href="/about" class="">about</a>
+      </li>
+      <li>
+        <a href="/contact" class="">contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="header__button">
+    <form action="/logout" method="get">
+      <input type="submit" class="btn" value="Logout" />
+    </form>
+  </div>
+</header>

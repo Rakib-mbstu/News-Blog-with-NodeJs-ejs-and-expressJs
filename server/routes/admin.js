@@ -97,12 +97,49 @@ router.post("/add-post", authMiddleware, async (req, res) => {
       });
       await Post.create(newPost);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
     res.redirect("/dashboard");
   } catch (e) {
     console.log(e);
   }
+});
+router.get("/edit-post/:id", authMiddleware, async (req, res) => {
+  try {
+    const locals = {
+      title: "Admin",
+      description: "NodeJs bloging site",
+    };
+    const data = await Post.findById(req.params.id);
+    res.render("admin/edit-post", { locals, data, layout: adminLayout });
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.put("/edit-post/:id", authMiddleware, async (req, res) => {
+  try {
+    await Post.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      body: req.body.body,
+      updatedAt: Date.now(),
+    });
+    res.redirect("/dashboard");
+  } catch (e) {
+    console.log(e);
+  }
+});
+router.delete("/delete-post/:id", authMiddleware, async (req, res) => {
+  try {
+    await Post.deleteOne({ _id: req.params.id });
+    res.redirect("/dashboard");
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/");
 });
 
 // router.post("/register", async (req, res) => {
