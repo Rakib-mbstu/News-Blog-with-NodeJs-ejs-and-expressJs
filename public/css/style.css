@@ -148,7 +148,7 @@ img{
     text-decoration: underline;
 }
 .header__nav ul a.active{
-    color: var(--grey);
+    color: var(--grey-light);
 }
 .author{
     padding: 10px 0;
